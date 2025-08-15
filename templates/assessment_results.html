@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+{% block title %}Your Color Identity - {{ color_info.name }}{% endblock %}
+
+{% block content %}
+<div class="results-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Header -->
+                <div class="text-center mb-5">
+                    <div class="color-badge mb-4" style="background-color: {{ color_info.color_hex }};">
+                        <span class="color-emoji">{{ color_info.emoji }}</span>
+                    </div>
+                    <h1 class="display-5 text-primary mb-3">Your Color Identity</h1>
+                    <h2 class="h3 mb-4" style="color: {{ color_info.color_hex }};">{{ color_info.name }}</h2>
+                    <p class="lead">{{ color_info.description }}</p>
+                </div>
+
+                <!-- Identity Overview -->
+                <div class="row mb-5">
+                    <div class="col-lg-6 mb-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-circle me-3" style="background-color: {{ color_info.color_hex }};">
+                                        <i class="fas fa-heart text-white"></i>
+                                    </div>
+                                    <h4>Your Traits</h4>
+                                </div>
+                                <div class="traits-list">
+                                    {% for trait in color_info.traits %}
+                                    <span class="badge rounded-pill me-2 mb-2" style="background-color: {{ color_info.color_hex }}20; color: {{ color_info.color_hex }};">
+                                        {{ trait }}
+                                    </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 mb-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-circle bg-success me-3">
+                                        <i class="fas fa-leaf text-white"></i>
+                                    </div>
+                                    <h4>Support Focus</h4>
+                                </div>
+                                <p class="mb-0">{{ color_info.support_focus }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mental Health Insights -->
+                <div class="mental-health-section mb-5">
+                    <div class="card border-0 shadow-lg">
+                        <div class="card-header bg-transparent border-0 p-4">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-circle bg-info me-3">
+                                    <i class="fas fa-brain text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="mb-1">Mental Health Insights</h3>
+                                    <p class="text-muted mb-0">Personalized support recommendations based on your responses</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <h5><i class="fas fa-exclamation-triangle text-warning me-2"></i>Areas of Focus</h5>
+                                    <ul class="list-unstyled">
+                                        {% for concern in mental_health_insights.potential_concerns %}
+                                        <li class="mb-2">
+                                            <i class="fas fa-circle text-warning me-2" style="font-size: 0.5rem;"></i>
+                                            {{ concern }}
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                
+                                <div class="col-md-6 mb-4">
+                                    <h5><i class="fas fa-lightbulb text-info me-2"></i>Recommended Resources</h5>
+                                    <ul class="list-unstyled">
+                                        {% for resource in mental_health_insights.recommended_resources %}
+                                        <li class="mb-2">
+                                            <i class="fas fa-check text-success me-2"></i>
+                                            {{ resource }}
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            {% if mental_health_insights.warning_signs %}
+                            <div class="alert alert-info d-flex align-items-center mt-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <span><strong>Note:</strong> {{ mental_health_insights.warning_signs }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Community Assignment -->
+                <div class="community-section mb-5">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="icon-circle me-3" style="background-color: {{ color_info.color_hex }};">
+                                            <i class="fas fa-users text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="mb-1">Your Support Community</h4>
+                                            <h5 class="text-muted mb-0">{{ group_name }}</h5>
+                                        </div>
+                                    </div>
+                                    <p class="mb-0">You've been matched with others who share your healing approach and color identity. This anonymous community provides peer support and understanding.</p>
+                                </div>
+                                <div class="col-md-4 text-md-end">
+                                    <a href="{{ url_for('chat') }}" class="btn btn-lg" style="background-color: {{ color_info.color_hex }}; color: white;">
+                                        <i class="fas fa-comments me-2"></i>Join Your Community
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crisis Resources (for Grey/Silent Warriors) -->
+                {% if user.color_identity == 'grey' %}
+                <div class="crisis-resources mb-5">
+                    <div class="card border-danger shadow-sm">
+                        <div class="card-header bg-danger text-white">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-phone me-2"></i>
+                                <h4 class="mb-0">Crisis Support Available 24/7</h4>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p>Your responses indicate you may be going through a particularly difficult time. Please know that support is available:</p>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="text-center">
+                                        <a href="tel:988" class="btn btn-danger btn-lg w-100">
+                                            <i class="fas fa-phone me-2"></i>Call 988
+                                        </a>
+                                        <small class="text-muted d-block mt-2">Suicide & Crisis Lifeline</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="text-center">
+                                        <a href="sms:741741?body=HOME" class="btn btn-outline-danger btn-lg w-100">
+                                            <i class="fas fa-sms me-2"></i>Text HOME to 741741
+                                        </a>
+                                        <small class="text-muted d-block mt-2">Crisis Text Line</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="text-center">
+                                        <a href="https://suicidepreventionlifeline.org/chat/" target="_blank" class="btn btn-outline-danger btn-lg w-100">
+                                            <i class="fas fa-comments me-2"></i>Online Chat
+                                        </a>
+                                        <small class="text-muted d-block mt-2">24/7 Crisis Chat</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Next Steps -->
+                <div class="next-steps text-center">
+                    <h3 class="mb-4">Ready to Begin Your Journey?</h3>
+                    <p class="lead mb-4">Your personalized dashboard awaits with tools tailored to your {{ color_info.name }} identity.</p>
+                    <div class="d-grid gap-2 d-md-block">
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg me-md-3">
+                            <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                        </a>
+                        <a href="{{ url_for('chat') }}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-comments me-2"></i>Meet Your Community
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.color-badge {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.color-emoji {
+    font-size: 3rem;
+}
+
+.icon-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.results-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 100vh;
+}
+
+[data-bs-theme="dark"] .results-section {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+.traits-list .badge {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.mental-health-section .card {
+    border-left: 4px solid #17a2b8;
+}
+
+.community-section .card {
+    border-left: 4px solid {{ color_info.color_hex }};
+}
+
+.next-steps {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+[data-bs-theme="dark"] .next-steps {
+    background: var(--medium-bg);
+}
+</style>
+{% endblock %}

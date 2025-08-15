@@ -1,0 +1,436 @@
+{% extends "base.html" %}
+
+{% block title %}Community Chat - {{ group_chat.name }} - Serenity{% endblock %}
+
+{% block content %}
+<div class="chat-section">
+    <div class="container-fluid">
+        <div class="row h-100">
+            <div class="col-lg-3 col-md-4 chat-sidebar">
+                <div class="chat-info card border-0 shadow-sm">
+                    <div class="card-header bg-transparent">
+                        <h5 class="mb-0 text-primary">
+                            <i class="fas fa-users me-2"></i>{{ group_chat.name }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted small">{{ group_chat.description }}</p>
+                        
+                        <div class="community-guidelines">
+                            <h6 class="text-primary">Community Guidelines</h6>
+                            <ul class="list-unstyled small text-muted">
+                                <li class="mb-2">
+                                    <i class="fas fa-heart text-danger me-1"></i>
+                                    Be kind and supportive to all members
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-user-secret text-info me-1"></i>
+                                    Respect everyone's anonymity
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-shield-alt text-success me-1"></i>
+                                    Share your experiences, not advice
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-exclamation-triangle text-warning me-1"></i>
+                                    Report inappropriate content
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-hands-helping text-purple me-1"></i>
+                                    Focus on healing and growth
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="crisis-resources mt-4 p-3 bg-danger bg-opacity-10 rounded">
+                            <h6 class="text-danger">
+                                <i class="fas fa-phone me-1"></i>Crisis Resources
+                            </h6>
+                            <p class="small mb-2">
+                                <strong>National Crisis Text Line:</strong><br>
+                                Text HOME to 741741
+                            </p>
+                            <p class="small mb-2">
+                                <strong>National Suicide Prevention Lifeline:</strong><br>
+                                988 or 1-800-273-8255
+                            </p>
+                            <p class="small text-muted">
+                                If you're in immediate danger, please contact emergency services (911) or go to your nearest emergency room.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9 col-md-8 chat-main">
+                <div class="chat-container card border-0 shadow-sm h-100">
+                    <div class="chat-header card-header bg-transparent d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-0">Welcome, {{ user.nickname }}</h5>
+                            <small class="text-muted">
+                                <i class="fas fa-circle text-success me-1" style="font-size: 8px;"></i>
+                                Anonymous Chat • Safe Space
+                            </small>
+                        </div>
+                        <div class="chat-actions">
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="chat-messages card-body" id="chatMessages">
+                        {% if messages %}
+                            {% for message in messages %}
+                            <div class="message-item mb-3 {{ 'own-message' if message.user_id == user.id else 'other-message' }}">
+                                <div class="message-bubble">
+                                    <div class="message-header d-flex justify-content-between align-items-center mb-1">
+                                        <span class="message-author">
+                                            {% if message.user_id == user.id %}
+                                                <i class="fas fa-user-circle text-primary me-1"></i>You
+                                            {% else %}
+                                                <i class="fas fa-user-circle text-muted me-1"></i>{{ message.user.nickname }}
+                                            {% endif %}
+                                        </span>
+                                        <small class="message-time text-muted">
+                                            {{ message.created_at.strftime('%I:%M %p') }}
+                                        </small>
+                                    </div>
+                                    <div class="message-content">
+                                        {{ message.content }}
+                                    </div>
+                                    {% if message.is_moderated %}
+                                    <small class="text-warning">
+                                        <i class="fas fa-eye me-1"></i>Moderated
+                                    </small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-chat text-center py-5">
+                                <lottie-player
+                                    src="https://assets2.lottiefiles.com/packages/lf20_V9t630.json"
+                                    background="transparent"
+                                    speed="1"
+                                    style="width: 120px; height: 120px; margin: 0 auto;"
+                                    loop
+                                    autoplay>
+                                </lottie-player>
+                                <h5 class="text-muted mt-3">Welcome to {{ group_chat.name }}!</h5>
+                                <p class="text-muted">
+                                    This is a safe space for anonymous support and healing.<br>
+                                    Start the conversation by sharing what's on your mind.
+                                </p>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="chat-input card-footer bg-transparent border-0">
+                        <form method="POST" action="{{ url_for('send_message') }}" id="messageForm">
+                            <div class="input-group">
+                                <textarea class="form-control chat-textarea" 
+                                         name="content" 
+                                         placeholder="Share your thoughts, feelings, or experiences..." 
+                                         rows="2" 
+                                         required
+                                         maxlength="500"></textarea>
+                                <button type="submit" class="btn btn-primary" id="sendButton">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Your message will be anonymous. Max 500 characters.
+                                </small>
+                                <small class="character-count text-muted">0/500</small>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Supportive Affirmations Modal -->
+<div class="modal fade" id="affirmationModal" tabindex="-1" aria-labelledby="affirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-body text-center p-4">
+                <lottie-player
+                    src="https://assets9.lottiefiles.com/packages/lf20_jcikwtux.json"
+                    background="transparent"
+                    speed="1"
+                    style="width: 80px; height: 80px; margin: 0 auto;"
+                    loop
+                    autoplay>
+                </lottie-player>
+                <h5 class="text-primary mt-3" id="affirmationText">You are not alone in this journey.</h5>
+                <p class="text-muted">Take a moment to breathe and remember your strength.</p>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    <i class="fas fa-heart me-2"></i>Thank you
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatMessages = document.getElementById('chatMessages');
+        const messageForm = document.getElementById('messageForm');
+        const textarea = document.querySelector('.chat-textarea');
+        const characterCount = document.querySelector('.character-count');
+        const sendButton = document.getElementById('sendButton');
+        
+        // Scroll to bottom of messages
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Initial scroll to bottom
+        scrollToBottom();
+        
+        // Character count for textarea
+        textarea.addEventListener('input', function() {
+            const length = this.value.length;
+            characterCount.textContent = `${length}/500`;
+            
+            if (length > 450) {
+                characterCount.classList.add('text-warning');
+            } else if (length > 490) {
+                characterCount.classList.add('text-danger');
+                characterCount.classList.remove('text-warning');
+            } else {
+                characterCount.classList.remove('text-warning', 'text-danger');
+            }
+        });
+        
+        // Auto-resize textarea
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+        
+        // Handle Enter key (Shift+Enter for new line, Enter to send)
+        textarea.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                if (this.value.trim()) {
+                    messageForm.submit();
+                }
+            }
+        });
+        
+        // Form submission with loading state
+        messageForm.addEventListener('submit', function(e) {
+            if (!textarea.value.trim()) {
+                e.preventDefault();
+                return;
+            }
+            
+            sendButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
+            sendButton.disabled = true;
+        });
+        
+        // Show supportive affirmations periodically
+        const affirmations = [
+            "You are stronger than you know.",
+            "Your feelings are valid and important.",
+            "Healing is not linear, and that's okay.",
+            "You deserve love and compassion.",
+            "Every small step forward matters.",
+            "You are worthy of support and care.",
+            "Your story matters, and so do you.",
+            "It's okay to not be okay sometimes.",
+            "You have survived difficult times before.",
+            "Your courage to seek help is inspiring."
+        ];
+        
+        function showRandomAffirmation() {
+            const randomAffirmation = affirmations[Math.floor(Math.random() * affirmations.length)];
+            document.getElementById('affirmationText').textContent = randomAffirmation;
+            
+            const modal = new bootstrap.Modal(document.getElementById('affirmationModal'));
+            modal.show();
+        }
+        
+        // Show affirmation every 10 minutes
+        setInterval(showRandomAffirmation, 600000);
+        
+        // Auto-refresh messages every 30 seconds
+        setInterval(function() {
+            // In a real implementation, this would use WebSockets or Server-Sent Events
+            // For now, we'll reload the page to get new messages
+            if (document.hasFocus()) {
+                window.location.reload();
+            }
+        }, 30000);
+        
+        // Highlight own messages
+        document.querySelectorAll('.own-message').forEach(message => {
+            message.style.animationDelay = '0.1s';
+        });
+        
+        // Add typing indicator (placeholder for WebSocket implementation)
+        let typingTimer;
+        textarea.addEventListener('input', function() {
+            clearTimeout(typingTimer);
+            
+            // Show typing indicator (would send to WebSocket in real implementation)
+            typingTimer = setTimeout(function() {
+                // Hide typing indicator
+            }, 1000);
+        });
+        
+        // Smooth scroll animation for new messages
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                    scrollToBottom();
+                }
+            });
+        });
+        
+        observer.observe(chatMessages, { childList: true });
+        
+        // Focus on textarea when page loads
+        textarea.focus();
+    });
+</script>
+
+<style>
+    .chat-section {
+        height: calc(100vh - 120px);
+        padding: 20px 0;
+    }
+    
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    
+    .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+    
+    .message-item {
+        animation: fadeInUp 0.3s ease-out;
+    }
+    
+    .message-bubble {
+        max-width: 70%;
+        padding: 12px 16px;
+        border-radius: 18px;
+        position: relative;
+    }
+    
+    .other-message .message-bubble {
+        background: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-right: auto;
+    }
+    
+    .own-message {
+        text-align: right;
+    }
+    
+    .own-message .message-bubble {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        margin-left: auto;
+    }
+    
+    .own-message .message-author,
+    .own-message .message-time {
+        color: rgba(255,255,255,0.8) !important;
+    }
+    
+    .chat-textarea {
+        resize: none;
+        border-radius: 20px;
+        padding: 12px 16px;
+        min-height: 50px;
+        max-height: 120px;
+    }
+    
+    .chat-textarea:focus {
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+        border-color: #007bff;
+    }
+    
+    .input-group .btn {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        margin-left: 10px;
+        align-self: flex-end;
+    }
+    
+    .chat-sidebar {
+        background: rgba(255,255,255,0.95);
+        padding: 20px;
+    }
+    
+    .community-guidelines li {
+        padding: 5px 0;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .text-purple {
+        color: #6f42c1 !important;
+    }
+    
+    .empty-chat {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .chat-sidebar {
+            position: fixed;
+            top: 80px;
+            left: -100%;
+            width: 80%;
+            height: calc(100vh - 80px);
+            z-index: 1000;
+            transition: left 0.3s ease;
+            background: white;
+        }
+        
+        .chat-sidebar.show {
+            left: 0;
+        }
+        
+        .message-bubble {
+            max-width: 85%;
+        }
+        
+        .chat-section {
+            height: calc(100vh - 80px);
+        }
+    }
+</style>
+{% endblock %}

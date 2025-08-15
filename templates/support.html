@@ -1,0 +1,424 @@
+{% extends "base.html" %}
+
+{% block title %}Support & Resources - Serenity{% endblock %}
+
+{% block content %}
+<div class="support-section">
+    <!-- Crisis Banner -->
+    <div class="crisis-banner bg-danger text-white py-3">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h6 class="mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>In Crisis?</strong> If you're in immediate danger, please contact emergency services (112) or go to your nearest emergency room.
+                    </h6>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="tel:988" class="btn btn-light btn-sm">
+                        <i class="fas fa-phone me-1"></i>Call 988
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="support-hero py-5">
+        <div class="container">
+            <div class="text-center">
+                <h1 class="display-4 fw-bold mb-4">Support & Resources</h1>
+                <p class="lead">Comprehensive mental health resources and crisis support information</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crisis Resources -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="h1 text-danger">
+                    <i class="fas fa-life-ring me-2"></i>Crisis Resources
+                </h2>
+                <p class="lead">Immediate help when you need it most</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="crisis-card card border-danger h-100">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-phone fa-3x text-danger mb-3"></i>
+                            <h4>Crisis Hotlines</h4>
+                            <div class="crisis-info">
+                                <p class="mb-2">
+                                    <strong>National Suicide Prevention Lifeline</strong><br>
+                                    <a href="tel:988" class="btn btn-danger btn-sm">988</a>
+                                </p>
+                                <p class="mb-2">
+                                    <strong>Crisis Text Line</strong><br>
+                                    Text HOME to <a href="sms:741741" class="btn btn-outline-danger btn-sm">741741</a>
+                                </p>
+                                <p class="small text-muted">Available 24/7, free and confidential</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 mb-4">
+                    <div class="crisis-card card border-warning h-100">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-comments fa-3x text-warning mb-3"></i>
+                            <h4>Online Chat Support</h4>
+                            <div class="crisis-info">
+                                <p class="mb-3">
+                                    <strong>National Suicide Prevention Lifeline Chat</strong><br>
+                                    <a href="https://suicidepreventionlifeline.org/chat/" target="_blank" class="btn btn-warning btn-sm">
+                                        Start Chat
+                                    </a>
+                                </p>
+                                <p class="mb-3">
+                                    <strong>Crisis Text Line Chat</strong><br>
+                                    <a href="https://www.crisistextline.org/" target="_blank" class="btn btn-outline-warning btn-sm">
+                                        Web Chat
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 mb-4">
+                    <div class="crisis-card card border-info h-100">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-hospital fa-3x text-info mb-3"></i>
+                            <h4>Emergency Services</h4>
+                            <div class="crisis-info">
+                                <p class="mb-2">
+                                    <strong>Emergency Services</strong><br>
+                                    <a href="tel:911" class="btn btn-danger btn-sm">911</a>
+                                </p>
+                                <p class="mb-2">
+                                    <strong>Local Emergency Room</strong><br>
+                                    Go to your nearest hospital
+                                </p>
+                                <p class="small text-muted">For immediate physical danger</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mental Health Resources -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="h1">Mental Health Resources</h2>
+                <p class="lead">Professional help and educational resources</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="resource-card card border-0 shadow h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-user-md fa-2x text-primary me-3"></i>
+                                <h4>Professional Therapy</h4>
+                            </div>
+                            <p class="text-muted mb-3">Connect with licensed mental health professionals</p>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <a href="https://www.psychologytoday.com/us/therapists" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-external-link-alt me-2"></i>Psychology Today - Find a Therapist
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="https://www.betterhelp.com/" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-external-link-alt me-2"></i>BetterHelp - Online Therapy
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="https://www.talkspace.com/" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-external-link-alt me-2"></i>Talkspace - Therapy Platform
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="https://openpathcollective.org/" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-external-link-alt me-2"></i>Open Path - Affordable Therapy
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-4">
+                    <div class="resource-card card border-0 shadow h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-mobile-alt fa-2x text-success me-3"></i>
+                                <h4>Mental Health Apps</h4>
+                            </div>
+                            <p class="text-muted mb-3">Tools for daily mental wellness support</p>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fas fa-leaf text-success me-2"></i>
+                                    <strong>Headspace</strong> - Meditation and mindfulness
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-moon text-primary me-2"></i>
+                                    <strong>Calm</strong> - Sleep, meditation, and relaxation
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-heart text-danger me-2"></i>
+                                    <strong>Sanvello</strong> - Anxiety and mood tracking
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-brain text-info me-2"></i>
+                                    <strong>MindShift</strong> - CBT for anxiety management
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-4">
+                    <div class="resource-card card border-0 shadow h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-book fa-2x text-warning me-3"></i>
+                                <h4>Educational Resources</h4>
+                            </div>
+                            <p class="text-muted mb-3">Learn about mental health and wellness</p>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <a href="https://www.nami.org/" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-external-link-alt me-2"></i>NAMI - Mental Health Information
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="https://www.nimh.nih.gov/" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-external-link-alt me-2"></i>NIMH - Research and Information
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="https://www.mentalhealth.gov/" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-external-link-alt me-2"></i>Mental Health.gov
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="https://www.mhanational.org/" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-external-link-alt me-2"></i>Mental Health America
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-4">
+                    <div class="resource-card card border-0 shadow h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-users fa-2x text-purple me-3"></i>
+                                <h4>Support Groups</h4>
+                            </div>
+                            <p class="text-muted mb-3">Connect with others in similar situations</p>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <a href="https://www.nami.org/Support-Education/Support-Groups" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-external-link-alt me-2"></i>NAMI Support Groups
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="https://www.dbsalliance.org/support/chapters-support-groups/" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-external-link-alt me-2"></i>Depression Support Groups
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="https://adaa.org/finding-help/treatment/peer-to-peer-support" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-external-link-alt me-2"></i>Anxiety Support Groups
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="https://www.7cups.com/" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-external-link-alt me-2"></i>7 Cups - Online Support
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Self-Care Resources -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="h1">Self-Care & Coping Strategies</h2>
+                <p class="lead">Practical tools for daily mental wellness</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="self-care-card card border-0 shadow h-100">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-om fa-3x text-primary mb-3"></i>
+                            <h5>Mindfulness</h5>
+                            <ul class="list-unstyled small text-start">
+                                <li class="mb-2">• Deep breathing exercises</li>
+                                <li class="mb-2">• Progressive muscle relaxation</li>
+                                <li class="mb-2">• Guided meditation</li>
+                                <li class="mb-2">• Mindful walking</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="self-care-card card border-0 shadow h-100">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-running fa-3x text-success mb-3"></i>
+                            <h5>Physical Wellness</h5>
+                            <ul class="list-unstyled small text-start">
+                                <li class="mb-2">• Regular exercise routine</li>
+                                <li class="mb-2">• Healthy sleep schedule</li>
+                                <li class="mb-2">• Nutritious eating habits</li>
+                                <li class="mb-2">• Time in nature</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="self-care-card card border-0 shadow h-100">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-palette fa-3x text-warning mb-3"></i>
+                            <h5>Creative Expression</h5>
+                            <ul class="list-unstyled small text-start">
+                                <li class="mb-2">• Journaling and writing</li>
+                                <li class="mb-2">• Art and drawing</li>
+                                <li class="mb-2">• Music and singing</li>
+                                <li class="mb-2">• Dance and movement</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="self-care-card card border-0 shadow h-100">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-heart fa-3x text-danger mb-3"></i>
+                            <h5>Social Connection</h5>
+                            <ul class="list-unstyled small text-start">
+                                <li class="mb-2">• Reach out to friends</li>
+                                <li class="mb-2">• Join support groups</li>
+                                <li class="mb-2">• Volunteer for causes</li>
+                                <li class="mb-2">• Practice gratitude</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Warning Signs -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="warning-signs-card card border-warning">
+                        <div class="card-header bg-warning text-dark">
+                            <h4 class="mb-0">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                When to Seek Professional Help
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-3">It's important to seek professional help if you experience any of the following:</p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Persistent sadness or hopelessness</li>
+                                        <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Thoughts of self-harm or suicide</li>
+                                        <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Severe anxiety or panic attacks</li>
+                                        <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Substance abuse problems</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Inability to carry out daily activities</li>
+                                        <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Extreme mood swings</li>
+                                        <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Social withdrawal and isolation</li>
+                                        <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Eating or sleeping disorders</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="text-center mt-4">
+                                <p class="mb-3"><strong>Remember: Seeking help is a sign of strength, not weakness.</strong></p>
+                                <a href="tel:988" class="btn btn-danger me-2">
+                                    <i class="fas fa-phone me-1"></i>Call 988 Now
+                                </a>
+                                <a href="https://suicidepreventionlifeline.org/chat/" target="_blank" class="btn btn-outline-primary">
+                                    <i class="fas fa-comments me-1"></i>Start Chat
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-5 bg-primary text-white">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="h1 mb-4">Need More Support?</h2>
+                <p class="lead mb-4">
+                    If you need additional resources or have questions about mental health support, don't hesitate to reach out for help.
+                </p>
+                <div class="d-flex justify-content-center flex-wrap gap-3">
+                    <a href="tel:988" class="btn btn-light btn-lg">
+                        <i class="fas fa-phone me-2"></i>Crisis Hotline: 988
+                    </a>
+                    <a href="sms:741741" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-sms me-2"></i>Text: 741741
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+.crisis-banner {
+    position: sticky;
+    top: 70px;
+    z-index: 1020;
+}
+
+.crisis-card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+}
+
+.resource-card:hover {
+    transform: translateY(-3px);
+    transition: transform 0.3s ease;
+}
+
+.self-care-card:hover {
+    transform: translateY(-3px);
+    transition: transform 0.3s ease;
+}
+
+.text-purple {
+    color: #8B5CF6 !important;
+}
+</style>
+{% endblock %}

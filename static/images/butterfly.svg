@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="butterflyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f093fb;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#357ABD;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Butterfly Body -->
+  <ellipse cx="50" cy="50" rx="1.5" ry="25" fill="url(#bodyGradient)" />
+  
+  <!-- Upper Wings -->
+  <path d="M48 35 C40 25, 25 25, 20 35 C18 40, 22 45, 30 42 C35 40, 42 38, 48 40 Z" 
+        fill="url(#butterflyGradient)" opacity="0.9" />
+  <path d="M52 35 C60 25, 75 25, 80 35 C82 40, 78 45, 70 42 C65 40, 58 38, 52 40 Z" 
+        fill="url(#butterflyGradient)" opacity="0.9" />
+  
+  <!-- Lower Wings -->
+  <path d="M48 50 C42 55, 30 60, 25 65 C22 70, 28 72, 35 68 C40 65, 45 58, 48 55 Z" 
+        fill="url(#butterflyGradient)" opacity="0.8" />
+  <path d="M52 50 C58 55, 70 60, 75 65 C78 70, 72 72, 65 68 C60 65, 55 58, 52 55 Z" 
+        fill="url(#butterflyGradient)" opacity="0.8" />
+  
+  <!-- Wing Details -->
+  <circle cx="35" cy="32" r="3" fill="#ffffff" opacity="0.4" />
+  <circle cx="65" cy="32" r="3" fill="#ffffff" opacity="0.4" />
+  <circle cx="32" cy="60" r="2" fill="#ffffff" opacity="0.3" />
+  <circle cx="68" cy="60" r="2" fill="#ffffff" opacity="0.3" />
+  
+  <!-- Antennae -->
+  <path d="M48 28 Q45 22, 42 20" stroke="url(#bodyGradient)" stroke-width="1.5" 
+        stroke-linecap="round" fill="none" />
+  <path d="M52 28 Q55 22, 58 20" stroke="url(#bodyGradient)" stroke-width="1.5" 
+        stroke-linecap="round" fill="none" />
+  <circle cx="42" cy="20" r="1.5" fill="url(#bodyGradient)" />
+  <circle cx="58" cy="20" r="1.5" fill="url(#bodyGradient)" />
+</svg>

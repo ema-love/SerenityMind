@@ -1,0 +1,460 @@
+{% extends "base.html" %}
+
+{% block title %}Serenity - Your Mental Wellness Journey{% endblock %}
+
+{% block content %}
+{% if session.user_id %}
+<!-- Logged In User Home -->
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center py-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="hero-content">
+                    <h1 class="display-4 fw-bold text-primary mb-4">
+                        Welcome back, <span class="text-gradient">{{ session.user_nickname }}</span>
+                    </h1>
+                    <img src="{{ url_for('static', filename='file:///C:/Users/MSI/Downloads/Find.svg') }}" alt="Serenity" width="30" height="30" class="me-2">
+                        Continue your healing journey. Your safe space for growth, reflection, and community connection awaits.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                        </a>
+                        <a href="{{ url_for('chat') }}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-comments me-2"></i>Join Community
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions for Logged In Users -->
+<section class="quick-actions-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-4">
+                <h2>Quick Actions</h2>
+                <p class="text-muted">What would you like to do today?</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="action-card card h-100 border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <div class="action-icon bg-success text-white mb-3">
+                            <i class="fas fa-smile"></i>
+                        </div>
+                        <h5>Track Mood</h5>
+                        <p class="text-muted small mb-3">Log how you're feeling today</p>
+                        <a href="{{ url_for('dashboard') }}#mood-tracker" class="btn btn-outline-success btn-sm">Track Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="action-card card h-100 border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <div class="action-icon bg-info text-white mb-3">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h5>Build Habits</h5>
+                        <p class="text-muted small mb-3">Continue your wellness routine</p>
+                        <a href="{{ url_for('dashboard') }}#habit-tracker" class="btn btn-outline-info btn-sm">Add Habit</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="action-card card h-100 border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <div class="action-icon bg-purple text-white mb-3">
+                            <i class="fas fa-feather-alt"></i>
+                        </div>
+                        <h5>Write Poetry</h5>
+                        <p class="text-muted small mb-3">Express your thoughts creatively</p>
+                        <a href="{{ url_for('write_poem') }}" class="btn btn-outline-purple btn-sm">Start Writing</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="action-card card h-100 border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <div class="action-icon bg-warning text-white mb-3">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h5>Community Chat</h5>
+                        <p class="text-muted small mb-3">Connect with your support group</p>
+                        <a href="{{ url_for('chat') }}" class="btn btn-outline-warning btn-sm">Join Chat</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% else %}
+<!-- Non-Logged In User Home -->
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-12 d-flex flex-column align-items-center justify-content-center text-center" style="min-height: 60vh;">
+                <div class="hero-content">
+                    <h1 class="display-4 fw-bold text-primary mb-4">
+                        Welcome to <span class="text-gradient">Serenity</span>
+                    </h1>
+                    <p class="lead mb-4">
+                       Your safe space to breathe, reflect, and grow. Connect, heal, and find strength with a community that understands — all while staying private and supported.<br>
+                       Find peace, embrace strength, and heal together.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-user-plus me-2"></i>Start Your Journey
+                        </a>
+                        <a href="#features" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-info-circle me-2"></i>Learn More
+                        </a>
+                    </div                    <img src="{{ url_for('static', filename='file:///C:/Users/MSI/Downloads/Find.svg') }}" alt="Serenity" width="30" height="30" class="me-2">                    <img src="{{ url_for('static', filename='images/butterfly.svg') }}" alt="Serenity" width="30" height="30" class="me-2">                    <img src="{{ url_for('static', filename='images/butterfly.svg') }}" alt="Serenity" width="30" height="30" class="me-2">>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Mission Section -->
+<section class="mission-section py-5" id="mission">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="h1 mb-4">Our Mission</h2>
+                <p class="lead">
+                   At Serenity, our mission is to create a safe, anonymous, and empowering space where teenagers and young adults can prioritize their mental health. We aim to reduce the rate of suicide linked to mental disorders by providing accessible tools, supportive communities, and compassionate resources that encourage healing, self-love, and resilience. Through technology, creativity, and care, we strive to make mental wellness a shared journey — one where no one feels alone.
+                </p>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-4 text-center mb-4">
+                <div class="mission-card">
+                    <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
+                    <h4>Complete Anonymity</h4>
+                    <p class="text-muted">Your privacy is our priority. No real names, no judgment, just genuine support.</p>
+                </div>
+            </div>
+            <div class="col-md-4 text-center mb-4">
+                <div class="mission-card">
+                    <i class="fas fa-heart fa-3x text-danger mb-3"></i>
+                    <h4>Healing-Centered</h4>
+                    <p class="text-muted">Every feature is designed with healing, growth, and emotional wellness in mind.</p>
+                </div>
+            </div>
+            <div class="col-md-4 text-center mb-4">
+                <div class="mission-card">
+                    <i class="fas fa-users fa-3x text-success mb-3"></i>
+                    <h4>Community Support</h4>
+                    <p class="text-muted">Connect with others who understand your journey through anonymous support groups.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5 bg-light" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="h1">Serenity Apps & Tools</h2>
+            <p class="lead text-muted">Comprehensive tools for your mental wellness journey</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="feature-card card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-chart-line fa-2x text-primary me-3"></i>
+                            <h4 class="card-title mb-0">Serenity Tracker</h4>
+                        </div>
+                        <p class="card-text">
+                            Monitor your mood, emotions, and habits with intuitive tracking tools. Visualize your progress and identify patterns in your mental wellness journey.
+                        </p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>Daily mood tracking</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Habit monitoring</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Emotion intensity mapping</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <div class="feature-card card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-book fa-2x text-danger me-3"></i>
+                            <h4 class="card-title mb-0">Serenity Journal</h4>
+                            <span class="badge bg-warning text-dark ms-2">Coming Soon</span>
+                        </div>
+                        <p class="card-text">
+                            A comprehensive journaling platform for deep reflection, cause exploration, and cognitive processing of your experiences.
+                        </p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-clock text-muted me-2"></i>Daily check-ins</li>
+                            <li><i class="fas fa-clock text-muted me-2"></i>Cognitive reflections</li>
+                            <li><i class="fas fa-clock text-muted me-2"></i>Weekly summaries</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <div class="feature-card card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-feather-alt fa-2x text-purple me-3"></i>
+                            <h4 class="card-title mb-0">Creative Expression</h4>
+                        </div>
+                        <p class="card-text">
+                            Express your thoughts and emotions through poetry and creative writing in a safe, private space designed for healing.
+                        </p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>Poetry writing space</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Private or community sharing</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Creative healing tools</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <div class="feature-card card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-gamepad fa-2x text-info me-3"></i>
+                            <h4 class="card-title mb-0">Journey to Serenity Game</h4>
+                            <span class="badge bg-warning text-dark ms-2">Coming Soon</span>
+                        </div>
+                        <p class="card-text">
+                            An interactive wellness game that gamifies your mental health journey with challenges, achievements, and progress tracking.
+                        </p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-clock text-muted me-2"></i>Wellness challenges</li>
+                            <li><i class="fas fa-clock text-muted me-2"></i>Achievement system</li>
+                            <li><i class="fas fa-clock text-muted me-2"></i>Progress milestones</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Community Section -->
+<section class="community-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="h1 mb-4">Anonymous Community Support</h2>
+                <p class="lead mb-4">
+                    Connect with others who understand your journey through our anonymous support groups. Based on your assessment, you'll be matched with a community that shares similar experiences and healing approaches.
+                </p>
+                <div class="community-features">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-user-secret fa-lg text-primary me-3"></i>
+                        <span>Complete anonymity with nicknames only</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-users-cog fa-lg text-success me-3"></i>
+                        <span>Moderated for safety and support</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-heart-pulse fa-lg text-danger me-3"></i>
+                        <span>Matched based on your color identity</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <lottie-player
+                    src="https://assets7.lottiefiles.com/packages/lf20_DMgKk1.json"
+                    background="transparent"
+                    speed="1"
+                    style="width: 100%; height: 350px;"
+                    loop
+                    autoplay>
+                </lottie-player>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Founder Section -->
+<section class="founder-section py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="h1 mb-4">A Message from Our Founder</h2>
+                <div class="founder-card card border-0 shadow">
+                    <div class="card-body p-5">
+                        <img src="{{ url_for('static', filename='images/candle.svg') }}" alt="Founder" class="founder-image mb-4" width="80" height="80">
+                        <h4 class="text-primary mb-3">Ema</h4>
+                        <blockquote class="blockquote">
+                            <p class="mb-4">
+                                "Hi, I’m Ema. I know what it feels like to carry heavy thoughts and emotions, to face challenges that sometimes feel too big to handle alone. 
+                            </p>   
+                                 <p class="mb-4">
+                                That’s why I created Serenity — a space where young adults like you can pause, reflect, and heal without fear of judgment.
+                                </p>
+                                 <p class="mb-4">
+                                    This is a place where your story truly matters, where your feelings are seen and valued, and where you can take each step of your mental wellness journey at your own pace. Through anonymity, we create safety. Through community, we find strength. Through every tool, activity, and interaction on Serenity, my hope is that you feel supported, understood, and encouraged.
+                            </p>
+                            <p class="mb-4">
+                               Serenity isn’t just an app or a website — it’s a community built on care, empathy, and hope. I want this to be a space where you can breathe, express yourself freely, and discover the strength that already lives within you.
+
+You are not alone. Your healing matters. And together, we can create a place where peace, resilience, and self-love are always within reach."
+                            </p>
+                        </blockquote>
+                        <footer class="blockquote-footer mt-3">
+                            <cite title="Source Title">Founder & Creator of Serenity</cite>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Announcements Section -->
+{% if announcements %}
+<section class="announcements-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="h1">Latest Updates</h2>
+            <p class="lead text-muted">Stay informed about new features and mental health campaigns</p>
+        </div>
+        
+        <div class="row">
+            {% for announcement in announcements %}
+            <div class="col-lg-4 mb-4">
+                <div class="announcement-card card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">{{ announcement.title }}</h5>
+                        <p class="card-text">{{ announcement.content }}</p>
+                        <small class="text-muted">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            {{ announcement.created_at.strftime('%B %d, %Y') }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA Section -->
+<section class="cta-section py-5 bg-primary text-white">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="h1 mb-4">Ready to Begin Your Healing Journey?</h2>
+                <p class="lead mb-4">
+                    Join thousands of young adults who have found support, community, and healing through Serenity. Your mental wellness journey starts with a single step.
+                </p>
+                <a href="{{ url_for('register') }}" class="btn btn-light btn-lg">
+                    <i class="fas fa-seedling me-2"></i>Start Your Journey Today
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block styles %}
+<style>
+    body.dark-mode {
+        background: #181a1b !important;
+        color: #e0e0e0 !important;
+    }
+    .dark-mode .card,
+    .dark-mode .feature-card,
+    .dark-mode .mission-card,
+    .dark-mode .announcement-card {
+        background: #232526 !important;
+        color: #e0e0e0 !important;
+        border-color: #333 !important;
+    }
+    .dark-mode .btn-primary {
+        background: #4a69bd !important;
+        border-color: #4a69bd !important;
+    }
+    .dark-mode .btn-outline-primary {
+        color: #4a69bd !important;
+        border-color: #4a69bd !important;
+    }
+    .dark-mode .navbar, .dark-mode .bg-light {
+        background: #232526 !important;
+    }
+    .dark-mode .text-primary {
+        color: #82ccdd !important;
+    }
+    .dark-mode .text-gradient {
+        background: linear-gradient(90deg, #82ccdd, #b8e994);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+    }
+    .dark-mode .btn-outline-secondary {
+        color: #e0e0e0;
+        border-color: #e0e0e0;
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Dark mode toggle logic
+    document.addEventListener('DOMContentLoaded', function() {
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.body.classList.add('dark-mode');
+        }
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+            });
+        }
+    });
+</script>
+<script>
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+    
+    // Add animation on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    }, observerOptions);
+    
+    document.querySelectorAll('.feature-card, .mission-card, .announcement-card').forEach(card => {
+        observer.observe(card);
+    });
+</script>
+{% endblock %}

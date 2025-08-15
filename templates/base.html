@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Serenity - Mental Wellness Platform{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <!-- Global Dark Mode Toggle Button -->
+    <button id="darkModeToggle" class="btn btn-outline-secondary position-fixed" style="top: 20px; right: 20px; z-index: 2000;">
+        <i class="fas fa-moon"></i>
+    </button>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+                <span class="brand-text">Serenity</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    {% if session.user_id %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('index') }}">
+                                <i class="fas fa-home me-1"></i>Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('dashboard') }}">
+                                <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('chat') }}">
+                                <i class="fas fa-comments me-1"></i>Community
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-info-circle me-1"></i>Learn More
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ url_for('about') }}">
+                                    <i class="fas fa-heart me-2"></i>About Serenity
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('features') }}">
+                                    <i class="fas fa-star me-2"></i>Features
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('support') }}">
+                                    <i class="fas fa-life-ring me-2"></i>Support & Resources
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{ url_for('privacy') }}">
+                                    <i class="fas fa-shield-alt me-2"></i>Privacy Policy
+                                </a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('about') }}">
+                                <i class="fas fa-heart me-1"></i>About
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('features') }}">
+                                <i class="fas fa-star me-1"></i>Features
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('privacy') }}">
+                            <i class="fas fa-shield-alt me-1"></i>Privacy
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    {% if session.user_id %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i>{{ session.user_nickname }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- Removed server-side dark mode toggle for consistency with JS toggle -->
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{ url_for('logout') }}">
+                                    <i class="fas fa-sign-out-alt me-1"></i>Logout
+                                </a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('register') }}">
+                                <i class="fas fa-user-plus me-1"></i>Join Serenity
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container mt-3">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="text-primary">Serenity</h6>
+                    <p class="text-muted small">A safe space for mental wellness and healing</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted small">
+                        Created with 💜 by Akintayo Erioluwa Mercy<br>
+                        &copy; 2025 Serenity Platform
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+        <style>
+            body.dark-mode {
+                background: #181a1b !important;
+                color: #f3f6f9 !important;
+            }
+            .dark-mode .card,
+            .dark-mode .feature-card,
+            .dark-mode .mission-card,
+            .dark-mode .announcement-card {
+                background: #23272f !important;
+                color: #f3f6f9 !important;
+                border-color: #444 !important;
+            }
+            .dark-mode .btn-primary {
+                background: #5dade2 !important;
+                border-color: #5dade2 !important;
+                color: #181a1b !important;
+            }
+            .dark-mode .btn-outline-primary {
+                color: #5dade2 !important;
+                border-color: #5dade2 !important;
+            }
+            .dark-mode .navbar, .dark-mode .bg-light {
+                background: #23272f !important;
+            }
+            .dark-mode .text-primary {
+                color: #5dade2 !important;
+            }
+            .dark-mode .text-gradient {
+                background: linear-gradient(90deg, #5dade2, #b8e994);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                text-fill-color: transparent;
+            }
+            .dark-mode .btn-outline-secondary {
+                color: #f3f6f9;
+                border-color: #f3f6f9;
+            }
+            .dark-mode .brand-text {
+                color: #b8e994 !important;
+            }
+        </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const darkModeToggle = document.getElementById('darkModeToggle');
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                    document.body.classList.add('dark-mode');
+                }
+                if (darkModeToggle) {
+                    darkModeToggle.addEventListener('click', function() {
+                        document.body.classList.toggle('dark-mode');
+                        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+                    });
+                }
+            });
+        </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Lottie Web -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lottie-config.js') }}"></script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

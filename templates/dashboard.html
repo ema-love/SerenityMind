@@ -1,0 +1,850 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Serenity{% endblock %}
+
+{% block content %}
+<div class="dashboard-section">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 col-md-4 sidebar-col">
+                <div class="sidebar">
+                    <div class="user-profile text-center mb-4">
+                        <div class="profile-avatar mb-3">
+                            <img src="{{ url_for('static', filename='images/butterfly.svg') }}" 
+                                 alt="Profile" width="60" height="60" class="rounded-circle bg-light p-2">
+                        </div>
+                        <h5 class="text-primary">{{ user.nickname }}</h5>
+                        <div class="color-identity">
+                            <span class="badge badge-color" style="background-color: {{ user.color_identity }};">
+                                {{ color_info.name }}
+                            </span>
+                        </div>
+                        <p class="text-muted small mt-2">{{ color_info.description[:50] }}...</p>
+                    </div>
+
+                    <nav class="sidebar-nav">
+                        <ul class="nav nav-pills flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#overview" data-tab="overview">
+                                    <i class="fas fa-tachometer-alt me-2"></i>Overview
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#mood-tracker" data-tab="mood-tracker">
+                                    <i class="fas fa-smile me-2"></i>Mood Tracker
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#habit-tracker" data-tab="habit-tracker">
+                                    <i class="fas fa-leaf me-2"></i>Habit Tracker
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#emotion-tracker" data-tab="emotion-tracker">
+                                    <i class="fas fa-heart-pulse me-2"></i>Emotions
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#poetry" data-tab="poetry">
+                                    <i class="fas fa-feather-alt me-2"></i>Poetry Space
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('chat') }}">
+                                    <i class="fas fa-comments me-2"></i>Community Chat
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div class="sidebar-footer mt-4">
+                        <div class="quick-stats">
+                            <h6 class="text-muted">Quick Stats</h6>
+                            <div class="stat-item d-flex justify-content-between mb-2">
+                                <span>Mood Entries:</span>
+                                <span class="badge bg-primary">{{ recent_moods|length }}</span>
+                            </div>
+                            <div class="stat-item d-flex justify-content-between mb-2">
+                                <span>Habits Tracked:</span>
+                                <span class="badge bg-success">{{ recent_habits|length }}</span>
+                            </div>
+                            <div class="stat-item d-flex justify-content-between">
+                                <span>Poems Written:</span>
+                                <span class="badge bg-purple">{{ recent_poems|length }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9 col-md-8">
+                <div class="main-content">
+                    <!-- Header -->
+                    <div class="dashboard-header mb-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h2 class="h3">Welcome back, {{ user.nickname }}! ✨</h2>
+                                <p class="text-muted">How are you feeling today? Let's continue your wellness journey.</p>
+                            </div>
+                            <div class="header-actions">
+                                <form method="POST" action="{{ url_for('toggle_dark_mode') }}" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                        <i class="fas fa-{{ 'sun' if user.dark_mode else 'moon' }} me-1"></i>
+                                        {{ 'Light' if user.dark_mode else 'Dark' }} Mode
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+                        <!-- Overview Tab -->
+                        <div class="tab-pane fade show active" id="overview">
+                            <div class="row">
+                                <!-- Color Identity Card -->
+                                <div class="col-lg-12 mb-4">
+                                    <div class="card border-0 shadow-sm color-identity-card" 
+                                         style="background: linear-gradient(135deg, {{ user.color_identity }}20, {{ user.color_identity }}10);">
+                                        <div class="card-body p-4">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-8">
+                                                    <h4 class="text-primary mb-2">Your Color Identity: {{ color_info.name }}</h4>
+                                                    <p class="mb-3">{{ color_info.description }}</p>
+                                                    <div class="traits mb-3">
+                                                        <h6 class="text-muted">Your Traits:</h6>
+                                                        {% for trait in color_info.traits %}
+                                                        <span class="badge bg-light text-dark me-2 mb-1">{{ trait }}</span>
+                                                        {% endfor %}
+                                                    </div>
+                                                    <p class="small text-muted">
+                                                        <strong>Support Focus:</strong> {{ color_info.support_focus }}
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-4 text-center">
+                                                    <div class="color-circle mx-auto mb-3" 
+                                                         style="width: 100px; height: 100px; background: {{ user.color_identity }}; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                        <i class="fas fa-palette text-white fa-2x"></i>
+                                                    </div>
+                                                    <a href="{{ url_for('chat') }}" class="btn btn-primary btn-sm">
+                                                        Join Your Community
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Actions -->
+                                <div class="col-lg-4 mb-4">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-smile fa-3x text-warning mb-3"></i>
+                                            <h5>Track Your Mood</h5>
+                                            <p class="text-muted small">How are you feeling right now?</p>
+                                            <button class="btn btn-warning btn-sm" onclick="showTab('mood-tracker')">
+                                                Track Mood
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 mb-4">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-leaf fa-3x text-success mb-3"></i>
+                                            <h5>Build Habits</h5>
+                                            <p class="text-muted small">Create positive daily routines</p>
+                                            <button class="btn btn-success btn-sm" onclick="showTab('habit-tracker')">
+                                                Track Habits
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 mb-4">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-feather-alt fa-3x text-purple mb-3"></i>
+                                            <h5>Express Yourself</h5>
+                                            <p class="text-muted small">Write poetry and creative content</p>
+                                            <button class="btn btn-purple btn-sm" onclick="showTab('poetry')">
+                                                Write Poetry
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Recent Activity -->
+                                <div class="col-lg-6 mb-4">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-header bg-transparent">
+                                            <h6 class="mb-0">Recent Moods</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            {% if recent_moods %}
+                                                {% for mood in recent_moods[:5] %}
+                                                <div class="mood-item d-flex justify-content-between align-items-center mb-2">
+                                                    <div>
+                                                        <span class="mood-type">{{ mood.mood_type }}</span>
+                                                        <small class="text-muted d-block">{{ mood.created_at.strftime('%b %d, %I:%M %p') }}</small>
+                                                    </div>
+                                                    <div class="mood-level">
+                                                        <span class="badge bg-primary">{{ mood.mood_level }}/10</span>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            {% else %}
+                                                <p class="text-muted text-center">No mood entries yet. Start tracking your moods!</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 mb-4">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-header bg-transparent">
+                                            <h6 class="mb-0">Recent Emotions</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            {% if recent_emotions %}
+                                                {% for emotion in recent_emotions[:5] %}
+                                                <div class="emotion-item d-flex justify-content-between align-items-center mb-2">
+                                                    <div>
+                                                        <span class="emotion-name">{{ emotion.emotion_name }}</span>
+                                                        <small class="text-muted d-block">{{ emotion.created_at.strftime('%b %d, %I:%M %p') }}</small>
+                                                    </div>
+                                                    <div class="emotion-intensity">
+                                                        {% for i in range(1, 11) %}
+                                                            <i class="fas fa-circle {{ 'text-danger' if i <= emotion.intensity else 'text-muted' }}" 
+                                                               style="font-size: 8px;"></i>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            {% else %}
+                                                <p class="text-muted text-center">No emotion entries yet. Start tracking your emotions!</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mood Tracker Tab -->
+                        <div class="tab-pane fade" id="mood-tracker">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-header bg-transparent">
+                                            <h5 class="mb-0">Track Your Mood</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <form method="POST" action="{{ url_for('track_mood') }}">
+                                                <div class="mb-3">
+                                                    <label class="form-label">How are you feeling? (1-10)</label>
+                                                    <div class="mood-scale">
+                                                        {% for i in range(1, 11) %}
+                                                        <input type="radio" class="btn-check" name="mood_level" 
+                                                               id="mood{{ i }}" value="{{ i }}" required>
+                                                        <label class="btn btn-outline-primary mood-btn" for="mood{{ i }}">{{ i }}</label>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="mood_type" class="form-label">Mood Type</label>
+                                                    <select class="form-select" name="mood_type" required>
+                                                        <option value="">Select your mood...</option>
+                                                        <option value="Happy">😊 Happy</option>
+                                                        <option value="Sad">😢 Sad</option>
+                                                        <option value="Anxious">😰 Anxious</option>
+                                                        <option value="Calm">😌 Calm</option>
+                                                        <option value="Excited">🤗 Excited</option>
+                                                        <option value="Tired">😴 Tired</option>
+                                                        <option value="Frustrated">😤 Frustrated</option>
+                                                        <option value="Content">😊 Content</option>
+                                                        <option value="Overwhelmed">😵 Overwhelmed</option>
+                                                        <option value="Hopeful">🌟 Hopeful</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="notes" class="form-label">Notes (Optional)</label>
+                                                    <textarea class="form-control" name="notes" rows="3" 
+                                                              placeholder="What's contributing to your mood today?"></textarea>
+                                                </div>
+
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fas fa-save me-2"></i>Save Mood Entry
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-header bg-transparent">
+                                            <h6 class="mb-0">Mood History</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            {% if recent_moods %}
+                                                {% for mood in recent_moods %}
+                                                <div class="mood-history-item mb-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <span class="fw-bold">{{ mood.mood_type }}</span>
+                                                        <span class="badge bg-primary">{{ mood.mood_level }}/10</span>
+                                                    </div>
+                                                    <small class="text-muted">{{ mood.created_at.strftime('%b %d, %I:%M %p') }}</small>
+                                                    {% if mood.notes %}
+                                                    <p class="small text-muted mt-1">{{ mood.notes[:50] }}...</p>
+                                                    {% endif %}
+                                                </div>
+                                                {% endfor %}
+                                            {% else %}
+                                                <p class="text-muted text-center">No mood entries yet.</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Habit Tracker Tab -->
+                        <div class="tab-pane fade" id="habit-tracker">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-header bg-transparent">
+                                            <h5 class="mb-0">Track Your Habits</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <form method="POST" action="{{ url_for('track_habit') }}">
+                                                <div class="mb-3">
+                                                    <label for="habit_name" class="form-label">Habit Name</label>
+                                                    <input type="text" class="form-control" name="habit_name" 
+                                                           placeholder="e.g., Meditation, Exercise, Reading" required>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="completed" id="completed">
+                                                        <label class="form-check-label" for="completed">
+                                                            Mark as completed for today
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <button type="submit" class="btn btn-success">
+                                                    <i class="fas fa-leaf me-2"></i>Track Habit
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="card border-0 shadow-sm mt-4">
+                                        <div class="card-header bg-transparent">
+                                            <h6 class="mb-0">Suggested Habits</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="suggested-habit mb-2">
+                                                        <i class="fas fa-meditation text-purple me-2"></i>
+                                                        <strong>Daily Meditation</strong>
+                                                        <p class="small text-muted">5-10 minutes of mindfulness</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="suggested-habit mb-2">
+                                                        <i class="fas fa-walking text-success me-2"></i>
+                                                        <strong>Daily Walk</strong>
+                                                        <p class="small text-muted">Fresh air and movement</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="suggested-habit mb-2">
+                                                        <i class="fas fa-book text-primary me-2"></i>
+                                                        <strong>Reading</strong>
+                                                        <p class="small text-muted">30 minutes of reading</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="suggested-habit mb-2">
+                                                        <i class="fas fa-glass-water text-info me-2"></i>
+                                                        <strong>Hydration</strong>
+                                                        <p class="small text-muted">8 glasses of water</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-header bg-transparent">
+                                            <h6 class="mb-0">Recent Habits</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            {% if recent_habits %}
+                                                {% for habit in recent_habits %}
+                                                <div class="habit-item d-flex justify-content-between align-items-center mb-3">
+                                                    <div>
+                                                        <span class="fw-bold">{{ habit.habit_name }}</span>
+                                                        <small class="text-muted d-block">{{ habit.created_at.strftime('%b %d') }}</small>
+                                                    </div>
+                                                    <div>
+                                                        {% if habit.completed %}
+                                                            <i class="fas fa-check-circle text-success"></i>
+                                                        {% else %}
+                                                            <i class="fas fa-circle text-muted"></i>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            {% else %}
+                                                <p class="text-muted text-center">No habits tracked yet.</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Emotion Tracker Tab -->
+                        <div class="tab-pane fade" id="emotion-tracker">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-header bg-transparent">
+                                            <h5 class="mb-0">Track Your Emotions</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <form method="POST" action="{{ url_for('track_emotion') }}">
+                                                <div class="mb-3">
+                                                    <label for="emotion_name" class="form-label">What emotion are you experiencing?</label>
+                                                    <select class="form-select" name="emotion_name" required>
+                                                        <option value="">Select an emotion...</option>
+                                                        <option value="Joy">Joy</option>
+                                                        <option value="Sadness">Sadness</option>
+                                                        <option value="Anger">Anger</option>
+                                                        <option value="Fear">Fear</option>
+                                                        <option value="Anxiety">Anxiety</option>
+                                                        <option value="Love">Love</option>
+                                                        <option value="Gratitude">Gratitude</option>
+                                                        <option value="Shame">Shame</option>
+                                                        <option value="Guilt">Guilt</option>
+                                                        <option value="Pride">Pride</option>
+                                                        <option value="Excitement">Excitement</option>
+                                                        <option value="Loneliness">Loneliness</option>
+                                                        <option value="Hope">Hope</option>
+                                                        <option value="Disappointment">Disappointment</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label">Intensity (1-10)</label>
+                                                    <div class="intensity-scale">
+                                                        {% for i in range(1, 11) %}
+                                                        <input type="radio" class="btn-check" name="intensity" 
+                                                               id="intensity{{ i }}" value="{{ i }}" required>
+                                                        <label class="btn btn-outline-danger intensity-btn" for="intensity{{ i }}">{{ i }}</label>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="trigger" class="form-label">What triggered this emotion? (Optional)</label>
+                                                    <textarea class="form-control" name="trigger" rows="3" 
+                                                              placeholder="Describe what led to this emotion..."></textarea>
+                                                </div>
+
+                                                <button type="submit" class="btn btn-danger">
+                                                    <i class="fas fa-heart-pulse me-2"></i>Track Emotion
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-header bg-transparent">
+                                            <h6 class="mb-0">Emotion Patterns</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            {% if recent_emotions %}
+                                                {% for emotion in recent_emotions %}
+                                                <div class="emotion-pattern mb-3">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span class="fw-bold">{{ emotion.emotion_name }}</span>
+                                                        <div class="intensity-dots">
+                                                            {% for i in range(1, 11) %}
+                                                                <span class="dot {{ 'active' if i <= emotion.intensity else '' }}"></span>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                    <small class="text-muted">{{ emotion.created_at.strftime('%b %d, %I:%M %p') }}</small>
+                                                    {% if emotion.trigger %}
+                                                    <p class="small text-muted mt-1">{{ emotion.trigger[:50] }}...</p>
+                                                    {% endif %}
+                                                </div>
+                                                {% endfor %}
+                                            {% else %}
+                                                <p class="text-muted text-center">No emotions tracked yet.</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Poetry Tab -->
+                        <div class="tab-pane fade" id="poetry">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-header bg-transparent">
+                                            <h5 class="mb-0">
+                                                {% if edit_poem %}Edit Poem{% else %}Write Your Heart{% endif %}
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <form method="POST" action="{{ url_for('write_poem') }}">
+                                                {% if edit_poem %}
+                                                <input type="hidden" name="poem_id" value="{{ edit_poem.id }}">
+                                                {% endif %}
+                                                
+                                                <div class="mb-3">
+                                                    <label for="title" class="form-label">Title (Optional)</label>
+                                                    <input type="text" class="form-control" name="title" 
+                                                           placeholder="Give your poem a title..." 
+                                                           value="{{ edit_poem.title if edit_poem else '' }}">
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="content" class="form-label">Your Poem</label>
+                                                    <textarea class="form-control poem-textarea" name="content" 
+                                                              rows="12" required
+                                                              placeholder="Let your emotions flow through words...">{{ edit_poem.content if edit_poem else '' }}</textarea>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="is_private" 
+                                                               id="is_private" {{ 'checked' if not edit_poem or edit_poem.is_private }}>
+                                                        <label class="form-check-label" for="is_private">
+                                                            Keep this poem private
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex gap-2">
+                                                    <button type="submit" class="btn btn-purple">
+                                                        <i class="fas fa-save me-2"></i>
+                                                        {{ 'Update Poem' if edit_poem else 'Save Poem' }}
+                                                    </button>
+                                                    {% if edit_poem %}
+                                                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
+                                                        Cancel
+                                                    </a>
+                                                    {% endif %}
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-header bg-transparent">
+                                            <h6 class="mb-0">Your Poems</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            {% if recent_poems %}
+                                                {% for poem in recent_poems %}
+                                                <div class="poem-item mb-3 p-3 bg-light rounded">
+                                                    <h6 class="poem-title">
+                                                        {{ poem.title or 'Untitled' }}
+                                                        {% if poem.is_private %}
+                                                        <i class="fas fa-lock text-muted small"></i>
+                                                        {% endif %}
+                                                    </h6>
+                                                    <p class="poem-preview text-muted small">
+                                                        {{ poem.content[:100] }}{% if poem.content|length > 100 %}...{% endif %}
+                                                    </p>
+                                                    <div class="poem-actions">
+                                                        <small class="text-muted">{{ poem.updated_at.strftime('%b %d, %Y') }}</small>
+                                                        <a href="{{ url_for('write_poem', edit=poem.id) }}" 
+                                                           class="btn btn-sm btn-outline-primary ms-2">
+                                                            <i class="fas fa-edit"></i> Edit
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            {% else %}
+                                                <p class="text-muted text-center">
+                                                    <i class="fas fa-feather-alt fa-2x mb-2 d-block"></i>
+                                                    No poems yet. Start writing to express your feelings!
+                                                </p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="card border-0 shadow-sm mt-3">
+                                        <div class="card-header bg-transparent">
+                                            <h6 class="mb-0">Writing Prompts</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="writing-prompt mb-2">
+                                                <small class="text-muted">"Today I feel..."</small>
+                                            </div>
+                                            <div class="writing-prompt mb-2">
+                                                <small class="text-muted">"If my emotions were colors..."</small>
+                                            </div>
+                                            <div class="writing-prompt mb-2">
+                                                <small class="text-muted">"A letter to my past self..."</small>
+                                            </div>
+                                            <div class="writing-prompt mb-2">
+                                                <small class="text-muted">"What healing means to me..."</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Lottie Animation -->
+<div class="floating-wellness">
+    <lottie-player
+        src="https://assets10.lottiefiles.com/packages/lf20_jcikwtux.json"
+        background="transparent"
+        speed="0.8"
+        style="width: 150px; height: 150px; position: fixed; bottom: 20px; right: 20px; opacity: 0.4; z-index: -1;"
+        loop
+        autoplay>
+    </lottie-player>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Tab functionality
+    function showTab(tabId) {
+        // Remove active class from all nav links and tab panes
+        document.querySelectorAll('.sidebar-nav .nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('show', 'active');
+        });
+        
+        // Add active class to clicked nav link
+        document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+        
+        // Show the corresponding tab pane
+        document.getElementById(tabId).classList.add('show', 'active');
+    }
+    
+    // Event listeners for sidebar navigation
+    document.querySelectorAll('[data-tab]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const tabId = this.getAttribute('data-tab');
+            showTab(tabId);
+        });
+    });
+    
+    // Mood scale interactivity
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const value = parseInt(this.textContent);
+            
+            // Color code the mood buttons
+            document.querySelectorAll('.mood-btn').forEach((b, index) => {
+                b.classList.remove('btn-primary', 'btn-success', 'btn-warning', 'btn-danger');
+                if (index < value) {
+                    if (value <= 3) b.classList.add('btn-danger');
+                    else if (value <= 6) b.classList.add('btn-warning');
+                    else b.classList.add('btn-success');
+                } else {
+                    b.classList.add('btn-outline-primary');
+                }
+            });
+        });
+    });
+    
+    // Intensity scale for emotions
+    document.querySelectorAll('.intensity-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const value = parseInt(this.textContent);
+            
+            document.querySelectorAll('.intensity-btn').forEach((b, index) => {
+                b.classList.remove('btn-danger', 'btn-outline-danger');
+                if (index < value) {
+                    b.classList.add('btn-danger');
+                } else {
+                    b.classList.add('btn-outline-danger');
+                }
+            });
+        });
+    });
+    
+    // Auto-save for poetry (draft functionality)
+    let poemTextarea = document.querySelector('.poem-textarea');
+    if (poemTextarea) {
+        let saveTimeout;
+        poemTextarea.addEventListener('input', function() {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                // Could implement auto-save to localStorage here
+                console.log('Auto-saving poem draft...');
+            }, 2000);
+        });
+    }
+    
+    // Character count for text areas
+    document.querySelectorAll('textarea').forEach(textarea => {
+        const maxLength = textarea.getAttribute('maxlength');
+        if (maxLength) {
+            const counter = document.createElement('small');
+            counter.className = 'text-muted character-counter';
+            textarea.parentNode.appendChild(counter);
+            
+            function updateCounter() {
+                const remaining = maxLength - textarea.value.length;
+                counter.textContent = `${textarea.value.length}/${maxLength} characters`;
+                counter.className = remaining < 50 ? 'text-warning character-counter' : 'text-muted character-counter';
+            }
+            
+            textarea.addEventListener('input', updateCounter);
+            updateCounter();
+        }
+    });
+    
+    // Smooth transitions for tab changes
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.style.transition = 'opacity 0.3s ease-in-out';
+        });
+    });
+</script>
+
+<style>
+    .sidebar {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 20px;
+        height: fit-content;
+        position: sticky;
+        top: 100px;
+    }
+    
+    .color-identity-card {
+        border-left: 5px solid {{ user.color_identity }};
+    }
+    
+    .badge-color {
+        background-color: {{ user.color_identity }}20 !important;
+        border: 1px solid {{ user.color_identity }};
+        color: {{ user.color_identity }};
+    }
+    
+    .btn-purple {
+        background-color: #6f42c1;
+        border-color: #6f42c1;
+        color: white;
+    }
+    
+    .btn-purple:hover {
+        background-color: #5a359c;
+        border-color: #5a359c;
+        color: white;
+    }
+    
+    .text-purple {
+        color: #6f42c1 !important;
+    }
+    
+    .mood-scale, .intensity-scale {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+    
+    .mood-btn, .intensity-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50% !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .poem-textarea {
+        font-family: 'Georgia', serif;
+        line-height: 1.6;
+        resize: vertical;
+    }
+    
+    .intensity-dots {
+        display: flex;
+        gap: 2px;
+    }
+    
+    .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: #dee2e6;
+    }
+    
+    .dot.active {
+        background-color: #dc3545;
+    }
+    
+    .sidebar-nav .nav-link {
+        border-radius: 10px;
+        margin-bottom: 5px;
+        transition: all 0.3s ease;
+    }
+    
+    .sidebar-nav .nav-link:hover {
+        background-color: rgba(0, 123, 255, 0.1);
+        transform: translateX(5px);
+    }
+    
+    .sidebar-nav .nav-link.active {
+        background-color: #007bff;
+        color: white;
+    }
+    
+    @media (max-width: 768px) {
+        .sidebar {
+            position: relative;
+            top: 0;
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-nav {
+            display: flex;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .sidebar-nav .nav-item {
+            flex-shrink: 0;
+        }
+    }
+</style>
+{% endblock %}

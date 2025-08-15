@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="candleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f4f4f4;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e8e8e8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="flameGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f7931e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffd23f;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="glowGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ffd23f;stop-opacity:0.6" />
+      <stop offset="70%" style="stop-color:#f7931e;stop-opacity:0.2" />
+      <stop offset="100%" style="stop-color:#ff6b35;stop-opacity:0" />
+    </radialGradient>
+    <linearGradient id="wickGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2c2c2c;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Candle Base/Holder -->
+  <ellipse cx="50" cy="85" rx="15" ry="3" fill="#d4d4d4" opacity="0.8" />
+  <rect x="38" y="82" width="24" height="6" rx="2" fill="#e0e0e0" />
+  
+  <!-- Candle Body -->
+  <rect x="42" y="35" width="16" height="47" rx="2" fill="url(#candleGradient)" />
+  
+  <!-- Candle Top -->
+  <ellipse cx="50" cy="35" rx="8" ry="2" fill="#f8f8f8" />
+  
+  <!-- Wick -->
+  <rect x="49" y="32" width="2" height="8" fill="url(#wickGradient)" />
+  
+  <!-- Flame -->
+  <path d="M50 15 C48 20, 47 25, 49 30 C50 32, 51 32, 52 30 C53 25, 52 20, 50 15 Z" 
+        fill="url(#flameGradient)" />
+  
+  <!-- Inner Flame -->
+  <path d="M50 18 C49 22, 49 26, 50 29 C51 26, 51 22, 50 18 Z" 
+        fill="#ffd23f" opacity="0.8" />
+  
+  <!-- Glow Effect -->
+  <circle cx="50" cy="22" r="25" fill="url(#glowGradient)" />
+  
+  <!-- Wax Drips -->
+  <path d="M42 45 Q40 48, 41 52 Q42 54, 44 52 Q43 48, 42 45 Z" 
+        fill="#f0f0f0" opacity="0.7" />
+  <path d="M58 50 Q60 53, 59 57 Q58 59, 56 57 Q57 53, 58 50 Z" 
+        fill="#f0f0f0" opacity="0.7" />
+  
+  <!-- Candle Highlights -->
+  <rect x="44" y="35" width="2" height="45" fill="#ffffff" opacity="0.3" />
+  <rect x="54" y="37" width="1" height="43" fill="#e8e8e8" opacity="0.5" />
+  
+  <!-- Subtle Shadow -->
+  <ellipse cx="52" cy="88" rx="18" ry="2" fill="#000000" opacity="0.1" />
+</svg>

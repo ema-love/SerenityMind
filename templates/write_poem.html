@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block title %}Poetry Space - Serenity{% endblock %}
+
+{% block content %}
+<div class="poetry-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="poetry-header text-center mb-5">
+                    <h2 class="h1 text-primary">
+                        <i class="fas fa-feather-alt me-2"></i>Poetry Space
+                    </h2>
+                    <p class="lead">Express your thoughts, feelings, and experiences through the healing power of creative writing.</p>
+                </div>
+
+                <div class="card border-0 shadow-lg">
+                    <div class="card-body p-5">
+                        <form method="POST" action="{{ url_for('write_poem') }}">
+                            {% if poem %}
+                                <input type="hidden" name="poem_id" value="{{ poem.id }}">
+                            {% endif %}
+                            
+                            <div class="mb-4">
+                                <label for="title" class="form-label">
+                                    <i class="fas fa-bookmark me-1"></i>Title (Optional)
+                                </label>
+                                <input type="text" class="form-control form-control-lg" id="title" name="title" 
+                                       value="{{ poem.title if poem else '' }}"
+                                       placeholder="Give your poem a title...">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="content" class="form-label">
+                                    <i class="fas fa-pen me-1"></i>Your Poem
+                                </label>
+                                <textarea class="form-control" id="content" name="content" rows="15" 
+                                          placeholder="Let your thoughts flow freely...
+                                          
+Lines of hope and healing,
+Words that speak your truth,
+In this safe space of expression,
+Your voice matters..." required>{{ poem.content if poem else '' }}</textarea>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Express yourself authentically. Poetry is a powerful tool for processing emotions and experiences.
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="is_private" name="is_private" 
+                                           {{ 'checked' if not poem or poem.is_private else '' }}>
+                                    <label class="form-check-label" for="is_private">
+                                        <i class="fas fa-lock me-1"></i>Keep this poem private
+                                    </label>
+                                    <div class="form-text">
+                                        Private poems are only visible to you. You can change this setting later.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
+                                </a>
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-save me-2"></i>
+                                    {{ 'Update Poem' if poem else 'Save Poem' }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Writing Prompts -->
+                <div class="writing-prompts mt-5">
+                    <h4 class="text-center mb-4">Need inspiration? Try these prompts:</h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="prompt-card card border-0 bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-primary">Healing Journey</h6>
+                                    <p class="small mb-0">"Today I discovered something new about myself..."</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="prompt-card card border-0 bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-success">Gratitude</h6>
+                                    <p class="small mb-0">"In the midst of difficulty, I am grateful for..."</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="prompt-card card border-0 bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-info">Strength</h6>
+                                    <p class="small mb-0">"My strength comes from..."</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="prompt-card card border-0 bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-warning">Hope</h6>
+                                    <p class="small mb-0">"Tomorrow holds the possibility of..."</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="floating-animation">
+    <lottie-player
+        src="https://assets1.lottiefiles.com/packages/lf20_DMgKk1.json"
+        background="transparent"
+        speed="0.8"
+        style="width: 150px; height: 150px; position: fixed; top: 20%; right: -30px; opacity: 0.2; z-index: -1;"
+        loop
+        autoplay>
+    </lottie-player>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Auto-save functionality
+    const contentTextarea = document.getElementById('content');
+    const titleInput = document.getElementById('title');
+    let autoSaveTimer;
+
+    function autoSave() {
+        const content = contentTextarea.value;
+        const title = titleInput.value;
+        
+        if (content.length > 50) { // Only auto-save if there's substantial content
+            // Store in localStorage as backup
+            localStorage.setItem('poem_draft', JSON.stringify({
+                title: title,
+                content: content,
+                timestamp: new Date().toISOString()
+            }));
+        }
+    }
+
+    contentTextarea.addEventListener('input', function() {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(autoSave, 2000); // Auto-save after 2 seconds of no typing
+    });
+
+    titleInput.addEventListener('input', function() {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(autoSave, 2000);
+    });
+
+    // Load draft on page load if editing new poem
+    window.addEventListener('DOMContentLoaded', function() {
+        const isNewPoem = !document.querySelector('input[name="poem_id"]');
+        
+        if (isNewPoem) {
+            const draft = localStorage.getItem('poem_draft');
+            if (draft) {
+                const parsed = JSON.parse(draft);
+                const draftAge = new Date() - new Date(parsed.timestamp);
+                
+                // If draft is less than 24 hours old, offer to restore it
+                if (draftAge < 24 * 60 * 60 * 1000 && !contentTextarea.value) {
+                    if (confirm('We found a draft of your poem. Would you like to restore it?')) {
+                        titleInput.value = parsed.title || '';
+                        contentTextarea.value = parsed.content || '';
+                    }
+                }
+            }
+        }
+    });
+
+    // Clear draft when form is submitted successfully
+    document.querySelector('form').addEventListener('submit', function() {
+        localStorage.removeItem('poem_draft');
+    });
+
+    // Writing prompt click handlers
+    document.querySelectorAll('.prompt-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const promptText = this.querySelector('p').textContent;
+            const currentContent = contentTextarea.value;
+            
+            if (currentContent.length === 0 || confirm('This will add the prompt to your poem. Continue?')) {
+                contentTextarea.value = currentContent + (currentContent ? '\n\n' : '') + promptText + '\n';
+                contentTextarea.focus();
+                contentTextarea.setSelectionRange(contentTextarea.value.length, contentTextarea.value.length);
+            }
+        });
+    });
+
+    // Character count and writing stats
+    function updateStats() {
+        const content = contentTextarea.value;
+        const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
+        const lineCount = content.split('\n').length;
+        
+        // Create or update stats display
+        let statsDiv = document.getElementById('writing-stats');
+        if (!statsDiv) {
+            statsDiv = document.createElement('div');
+            statsDiv.id = 'writing-stats';
+            statsDiv.className = 'small text-muted mt-2';
+            contentTextarea.parentNode.appendChild(statsDiv);
+        }
+        
+        statsDiv.innerHTML = `
+            <i class="fas fa-chart-simple me-1"></i>
+            ${wordCount} words • ${lineCount} lines • ${content.length} characters
+        `;
+    }
+
+    contentTextarea.addEventListener('input', updateStats);
+    updateStats(); // Initial call
+</script>
+{% endblock %}
